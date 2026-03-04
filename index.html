@@ -297,7 +297,24 @@
       margin: 0 auto;
       width: 100%;
     }
-    .hero-content { max-width: 820px; }
+    .hero-content {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 64px;
+      align-items: center;
+      margin-bottom: 64px;
+    }
+    .hero-copy { max-width: 580px; }
+    .hero-form-col {
+      background: var(--c-surface);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    @media (max-width: 1024px) {
+      .hero-content { grid-template-columns: 1fr; }
+      .hero-copy { max-width: 100%; }
+    }
 
     /* Hero label row */
     .hero-meta {
@@ -697,25 +714,60 @@
     /* =============================================
        RESPONSIVE
     ============================================= */
+
+    /* ── Tablet (≤ 900px) ── */
     @media (max-width: 900px) {
       .wrap { padding: 0 24px; }
-      .hero-inner { padding: 56px 24px 72px; }
+      .hero-inner { padding: 56px 24px 56px; }
+      section.grain { padding: 80px 0 !important; }
+      .cta-section { padding: 100px 0 !important; }
       .g-2 { grid-template-columns: 1fr !important; gap: 48px !important; }
       .diot-grid { grid-template-columns: 1fr 1fr; }
-      .metric-grid { grid-template-columns: 1fr 1fr; }
       .t-hero { font-size: clamp(44px, 12vw, 72px); }
       .t-h2 { font-size: clamp(32px, 8vw, 52px); }
-      .stat-item { min-width: 130px; }
+      /* Stat row: 2 × 2 grid */
+      .stat-row { flex-wrap: wrap; }
+      .stat-item { flex: 0 0 50%; min-width: 0; box-sizing: border-box; }
+      .stat-item:nth-child(3) { border-left: none; border-top: 1px solid rgba(255,255,255,0.065); padding-top: 28px; }
+      .stat-item:nth-child(4) { border-top: 1px solid rgba(255,255,255,0.065); padding-top: 28px; }
     }
+
+    /* ── Large phone (≤ 600px) ── */
     @media (max-width: 600px) {
       .wrap { padding: 0 20px; }
-      .hero-inner { padding: 48px 20px 64px; }
+      .hero-inner { padding: 40px 20px 48px; }
+      section.grain { padding: 60px 0 !important; }
+      .cta-section { padding: 72px 0 !important; }
       .diot-grid { grid-template-columns: 1fr; }
-      .metric-grid { grid-template-columns: 1fr 1fr; }
-      .stat-row { flex-direction: column; gap: 24px; border-top: none; padding-top: 24px; }
-      .stat-item { border-left: none !important; padding-left: 0 !important; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 24px; }
+      .t-hero { font-size: clamp(34px, 10vw, 48px); }
+      .t-h2 { font-size: clamp(26px, 7vw, 38px); }
+      .t-body-lg { font-size: 15px; }
+      /* Stat row: single column */
+      .stat-row { flex-direction: column; gap: 0; border-top: none; padding-top: 20px; }
+      .stat-item { flex: none; border-left: none !important; padding: 20px 0 !important; border-top: 1px solid rgba(255,255,255,0.06); }
       .stat-item:first-child { border-top: none; }
+      .stat-num { font-size: 52px; }
+      /* Buttons */
       .btn-primary, .btn-ghost { width: 100%; justify-content: center; }
+      /* Hide nav CTA — inline form is visible in hero */
+      .nav .btn-primary { display: none; }
+      /* Cards */
+      .diot-cell { padding: 28px 22px !important; }
+      .card, .card-elevated { padding: 24px !important; }
+      /* Hero form */
+      .hero-form-col iframe { min-height: 500px !important; }
+      /* CTA calendar */
+      #HWRDmnOaFjT2Stg711vP_1772655458160 { min-height: 460px !important; }
+      /* Footer */
+      footer .wrap { flex-direction: column !important; align-items: center !important; text-align: center !important; gap: 16px !important; }
+    }
+
+    /* ── Small phone (≤ 480px) ── */
+    @media (max-width: 480px) {
+      .hero-inner { padding: 32px 20px 40px; }
+      .t-hero { font-size: clamp(30px, 9vw, 40px); }
+      .stat-num { font-size: 44px; }
+      .hero-content { gap: 40px; }
     }
   </style>
 </head>
@@ -733,7 +785,7 @@
         T. Baumann Group
       </span>
     </a>
-    <a href="https://calendly.com/baumannsec/30min" target="_blank" rel="noopener" class="btn-primary" style="padding: 12px 28px; font-size: 13px;">
+    <a href="#contact" class="btn-primary" style="padding: 12px 28px; font-size: 13px;">
       See Where Revenue Is Leaking
       <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
         <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -750,40 +802,65 @@
   <div class="hero-inner">
     <div class="hero-content">
 
-      <!-- Label row -->
-      <div class="hero-meta he he-0">
-        <span class="t-label">Conversion Infrastructure</span>
-        <span class="hero-meta-line"></span>
-        <span class="hero-meta-sub">King County Medical Aesthetics</span>
+      <!-- Left: copy -->
+      <div class="hero-copy">
+
+        <!-- Label row -->
+        <div class="hero-meta he he-0">
+          <span class="t-label">Conversion Infrastructure</span>
+          <span class="hero-meta-line"></span>
+          <span class="hero-meta-sub">King County Medical Aesthetics</span>
+        </div>
+
+        <!-- Headline -->
+        <h1 class="t-hero he he-1" style="margin-bottom: 32px;">
+          You have the demand.<br>
+          You're losing revenue<br>
+          <em style="color: rgba(235,228,216,0.55); font-style: italic;">in the gap.</em>
+        </h1>
+
+        <!-- Gold rule -->
+        <span class="gold-rule he he-2" style="margin-bottom: 30px;"></span>
+
+        <!-- Sub copy -->
+        <p class="t-body-lg he he-3" style="margin-bottom: 44px;">
+          T. Baumann Group installs and manages the conversion infrastructure that turns your existing demand into predictable, growing revenue — without adding headcount or increasing ad spend.
+        </p>
+
+        <!-- CTA group -->
+        <div class="he he-4" style="display: flex; flex-wrap: wrap; align-items: center; gap: 18px;">
+          <a href="#contact" class="btn-primary" style="box-shadow: 0 0 0 1px rgba(194,160,80,0.35), 0 4px 24px rgba(194,160,80,0.40), 0 8px 60px rgba(194,160,80,0.28), 0 16px 80px rgba(194,160,80,0.14), inset 0 1px 0 rgba(255,255,255,0.12);">
+            See Where Revenue Is Leaking
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <span class="t-sm" style="color: var(--c-text-3);">Structured as a diagnostic, not a pitch.</span>
+        </div>
+
       </div>
 
-      <!-- Headline -->
-      <h1 class="t-hero he he-1" style="margin-bottom: 32px;">
-        You have the demand.<br>
-        You're losing revenue<br>
-        <em style="color: rgba(235,228,216,0.55); font-style: italic;">in the gap.</em>
-      </h1>
-
-      <!-- Gold rule -->
-      <span class="gold-rule he he-2" style="margin-bottom: 30px;"></span>
-
-      <!-- Sub copy -->
-      <p class="t-body-lg he he-3" style="max-width: 580px; margin-bottom: 44px;">
-        T. Baumann Group installs and manages the conversion infrastructure that turns your existing demand into predictable, growing revenue — without adding headcount or increasing ad spend.
-      </p>
-
-      <!-- CTA group -->
-      <div class="he he-4" style="display: flex; flex-wrap: wrap; align-items: center; gap: 18px; margin-bottom: 64px;">
-        <a href="https://calendly.com/baumannsec/30min" target="_blank" rel="noopener" class="btn-primary" style="box-shadow: 0 0 0 1px rgba(194,160,80,0.35), 0 4px 24px rgba(194,160,80,0.40), 0 8px 60px rgba(194,160,80,0.28), 0 16px 80px rgba(194,160,80,0.14), inset 0 1px 0 rgba(255,255,255,0.12);">
-          See Where Revenue Is Leaking
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-            <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
-        <span class="t-sm" style="color: var(--c-text-3);">Structured as a diagnostic, not a pitch.</span>
+      <!-- Right: inline lead form -->
+      <div class="hero-form-col he he-3">
+        <iframe
+          src="https://links.tbktgroup.com/widget/form/VYs6nDWyGTcvxcn8QU98"
+          style="width: 100%; height: 100%; border: none; border-radius: 3px; min-height: 560px;"
+          id="inline-VYs6nDWyGTcvxcn8QU98"
+          data-layout="{'id':'INLINE'}"
+          data-trigger-type="alwaysShow"
+          data-trigger-value=""
+          data-activation-type="alwaysActivated"
+          data-activation-value=""
+          data-deactivation-type="neverDeactivate"
+          data-deactivation-value=""
+          data-form-name="Please Fill Out"
+          data-height="1009"
+          data-layout-iframe-id="inline-VYs6nDWyGTcvxcn8QU98"
+          data-form-id="VYs6nDWyGTcvxcn8QU98"
+          title="Please Fill Out">
+        </iframe>
       </div>
 
-      <!-- Stats -->
     </div>
 
     <div class="stat-row he he-5">
@@ -800,8 +877,8 @@
         <div class="t-sm">To measurable lift in revenue</div>
       </div>
       <div class="stat-item">
-        <div class="stat-num">110<span class="stat-unit">%</span></div>
-        <div class="t-sm">Satisfaction</div>
+        <div class="stat-num">2–3<span class="stat-unit">weeks</span></div>
+        <div class="t-sm">System installed and operational inside your existing environment</div>
       </div>
     </div>
 
@@ -935,6 +1012,64 @@
             Clear dashboard — real KPI numbers, not guesswork
           </li>
         </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     WHO IT'S FOR
+============================================================ -->
+<div class="divider"></div>
+<section class="grain" style="background: var(--c-bg-2); padding: 120px 0;">
+  <div class="wrap">
+
+    <div class="g-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;">
+
+      <!-- Left -->
+      <div class="reveal">
+        <span class="t-label" style="display: block; margin-bottom: 20px;">Who It's For</span>
+        <h2 class="t-h2" style="margin-bottom: 24px;">
+          Built for established King County practices — not startups.
+        </h2>
+        <span class="gold-rule" style="margin-bottom: 30px;"></span>
+        <p class="t-body-lg" style="margin-bottom: 20px;">
+          T. Baumann Group works with clinically credentialed owner-operators — NP, PA, or MD — generating $80K–$300K+ monthly in King County.
+        </p>
+        <p class="t-body">
+          You already have the demand. The gap is in the operational layer between your marketing and your revenue. That is the only layer we work in.
+        </p>
+      </div>
+
+      <!-- Right: fit checklist -->
+      <div class="reveal rd-2">
+        <div class="card-elevated" style="padding: 44px;">
+          <span class="t-label" style="display: block; margin-bottom: 28px; color: var(--c-text-3);">You're the right fit if</span>
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+            <div style="display: flex; gap: 16px; align-items: flex-start;">
+              <span style="color: var(--c-gold); font-size: 13px; margin-top: 2px; flex-shrink: 0;">→</span>
+              <p class="t-body" style="color: var(--c-text);">You're in Bellevue, Kirkland, Seattle, Issaquah, Mill Creek, or surrounding King County</p>
+            </div>
+            <div style="display: flex; gap: 16px; align-items: flex-start;">
+              <span style="color: var(--c-gold); font-size: 13px; margin-top: 2px; flex-shrink: 0;">→</span>
+              <p class="t-body" style="color: var(--c-text);">You're generating $80K–$300K+ monthly with existing lead flow</p>
+            </div>
+            <div style="display: flex; gap: 16px; align-items: flex-start;">
+              <span style="color: var(--c-gold); font-size: 13px; margin-top: 2px; flex-shrink: 0;">→</span>
+              <p class="t-body" style="color: var(--c-text);">You think operationally and want data, not enthusiasm</p>
+            </div>
+            <div style="display: flex; gap: 16px; align-items: flex-start;">
+              <span style="color: var(--c-gold); font-size: 13px; margin-top: 2px; flex-shrink: 0;">→</span>
+              <p class="t-body" style="color: var(--c-text);">You're skeptical of agency promises and want specific numbers with stated conditions</p>
+            </div>
+            <div style="display: flex; gap: 16px; align-items: flex-start;">
+              <span style="color: var(--c-gold); font-size: 13px; margin-top: 2px; flex-shrink: 0;">→</span>
+              <p class="t-body" style="color: var(--c-text);">You're running Zenoti, Meevo, Square, or a comparable CRM</p>
+            </div>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -1091,107 +1226,38 @@
 
 
 <!-- ============================================================
-     METRICS
+     MEET THE TEAM
 ============================================================ -->
 <div class="divider"></div>
-<section class="grain" style="background: var(--c-bg-2); padding: 100px 0;">
+<section class="grain" style="background: var(--c-bg-2); padding: 80px 0;">
   <div class="wrap">
 
-    <div class="reveal" style="text-align: center; margin-bottom: 64px;">
-      <span class="t-label" style="display: block; margin-bottom: 16px;">What to Expect</span>
-      <h2 class="t-h3" style="color: var(--c-text);">Specific numbers. Stated conditions.</h2>
-    </div>
+    <div class="g-2" style="display: grid; grid-template-columns: 360px 1fr; gap: 64px; align-items: center; max-width: 900px; margin: 0 auto;">
 
-    <div class="metric-grid reveal rd-1">
-
-      <div class="metric-cell">
-        <div class="metric-num">2–3</div>
-        <div class="metric-unit">Weeks</div>
-        <div class="t-sm">System installed and operational inside your existing environment</div>
-      </div>
-
-      <div class="metric-cell">
-        <div class="metric-num">60–90</div>
-        <div class="metric-unit">Days</div>
-        <div class="t-sm">To measurable lift in attended consultations</div>
-      </div>
-
-      <div class="metric-cell">
-        <div class="metric-num">20–40</div>
-        <div class="metric-unit">% Lift</div>
-        <div class="t-sm">In attended consultations and membership enrollments</div>
-      </div>
-
-      <div class="metric-cell">
-        <div class="metric-num">1–5</div>
-        <div class="metric-unit">Minutes</div>
-        <div class="t-sm">Speed-to-lead response during business hours</div>
-      </div>
-
-    </div>
-
-    <p class="t-sm" style="text-align: center; margin-top: 24px;">
-      Benchmarks are based on established practices with existing demand. Results depend on current show rate, lead volume, and CRM infrastructure.
-    </p>
-
-  </div>
-</section>
-
-
-<!-- ============================================================
-     WHO IT'S FOR
-============================================================ -->
-<div class="divider"></div>
-<section class="grain" style="background: var(--c-bg); padding: 120px 0;">
-  <div class="wrap">
-
-    <div class="g-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;">
-
-      <!-- Left -->
-      <div class="reveal">
-        <span class="t-label" style="display: block; margin-bottom: 20px;">Who It's For</span>
-        <h2 class="t-h2" style="margin-bottom: 24px;">
-          Built for established King County practices — not startups.
-        </h2>
-        <span class="gold-rule" style="margin-bottom: 30px;"></span>
-        <p class="t-body-lg" style="margin-bottom: 20px;">
-          T. Baumann Group works with clinically credentialed owner-operators — NP, PA, or MD — generating $80K–$300K+ monthly in King County.
-        </p>
-        <p class="t-body">
-          You already have the demand. The gap is in the operational layer between your marketing and your revenue. That is the only layer we work in.
-        </p>
-      </div>
-
-      <!-- Right: fit checklist -->
+      <!-- Left: photo -->
       <div class="reveal rd-2">
-        <div class="card-elevated" style="padding: 44px;">
-          <span class="t-label" style="display: block; margin-bottom: 28px; color: var(--c-text-3);">You're the right fit if</span>
-          <div style="display: flex; flex-direction: column; gap: 20px;">
-            <div style="display: flex; gap: 16px; align-items: flex-start;">
-              <span style="color: var(--c-gold); font-size: 13px; margin-top: 2px; flex-shrink: 0;">→</span>
-              <p class="t-body" style="color: var(--c-text);">You're in Bellevue, Kirkland, Seattle, Issaquah, Mill Creek, or surrounding King County</p>
-            </div>
-            <div style="display: flex; gap: 16px; align-items: flex-start;">
-              <span style="color: var(--c-gold); font-size: 13px; margin-top: 2px; flex-shrink: 0;">→</span>
-              <p class="t-body" style="color: var(--c-text);">You're generating $80K–$300K+ monthly with existing lead flow</p>
-            </div>
-            <div style="display: flex; gap: 16px; align-items: flex-start;">
-              <span style="color: var(--c-gold); font-size: 13px; margin-top: 2px; flex-shrink: 0;">→</span>
-              <p class="t-body" style="color: var(--c-text);">You think operationally and want data, not enthusiasm</p>
-            </div>
-            <div style="display: flex; gap: 16px; align-items: flex-start;">
-              <span style="color: var(--c-gold); font-size: 13px; margin-top: 2px; flex-shrink: 0;">→</span>
-              <p class="t-body" style="color: var(--c-text);">You're skeptical of agency promises and want specific numbers with stated conditions</p>
-            </div>
-            <div style="display: flex; gap: 16px; align-items: flex-start;">
-              <span style="color: var(--c-gold); font-size: 13px; margin-top: 2px; flex-shrink: 0;">→</span>
-              <p class="t-body" style="color: var(--c-text);">You're running Zenoti, Meevo, Square, or a comparable CRM</p>
-            </div>
-          </div>
+        <div style="position: relative; border-radius: 4px; overflow: hidden;">
+          <img src="brand_assets/owner-image.jpg" alt="Trevor Baumann, Owner" style="width: 100%; display: block; object-fit: cover; object-position: center top;">
+          <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(9,21,42,0.35) 0%, transparent 55%); pointer-events: none;"></div>
         </div>
       </div>
 
+      <!-- Right: bio -->
+      <div class="reveal">
+        <span class="t-label" style="display: block; margin-bottom: 20px;">Meet the Team</span>
+        <h2 class="t-h2" style="margin-bottom: 8px;">Trevor Baumann</h2>
+        <p style="font-family: 'DM Sans', sans-serif; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-gold); margin-bottom: 32px;">Owner</p>
+        <span class="gold-rule" style="margin-bottom: 32px;"></span>
+        <p class="t-body-lg">
+          Trevor's background is in IT infrastructure — he spent years making complex systems work practically for real organizations in the Pacific Northwest.
+        </p>
+        <p class="t-body" style="margin-top: 20px;">
+          That same systems-first thinking now drives T. Baumann Group, where he installs and manages conversion infrastructure that helps established King County med spas turn existing demand into predictable revenue.
+        </p>
+      </div>
+
     </div>
+
   </div>
 </section>
 
@@ -1203,7 +1269,7 @@
 <section id="contact" class="cta-section grain" style="padding: 140px 0; position: relative; overflow: hidden;">
   <div class="wrap" style="text-align: center;">
 
-    <div class="reveal" style="max-width: 680px; margin: 0 auto;">
+    <div class="reveal" style="max-width: 860px; margin: 0 auto;">
       <span class="t-label" style="display: block; margin-bottom: 28px;">Revenue Diagnostic</span>
       <h2 class="t-h2" style="margin-bottom: 20px;">
         The revenue is already there.<br>
@@ -1214,14 +1280,14 @@
         This conversation is structured as a diagnostic — we map where your revenue is leaking across the full pipeline before recommending anything. No pitch. No pressure.
       </p>
 
-      <div style="display: flex; flex-direction: column; align-items: center; gap: 16px;">
-        <a href="https://calendly.com/baumannsec/30min" target="_blank" rel="noopener" class="btn-primary" style="font-size: 15px; padding: 18px 48px;">
-          See Where Revenue Is Leaking
-          <svg width="15" height="15" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-            <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
-        <p class="t-sm">King County medical aesthetics practices &middot; Bellevue · Kirkland · Seattle · Issaquah · Mill Creek</p>
+      <div style="margin-top: 8px; text-align: left; max-width: 620px; margin-left: auto; margin-right: auto;">
+        <iframe
+          src="https://links.tbktgroup.com/widget/booking/HWRDmnOaFjT2Stg711vP"
+          style="width: 100%; border: none; overflow: hidden; min-height: 500px;"
+          scrolling="no"
+          id="HWRDmnOaFjT2Stg711vP_1772655458160">
+        </iframe>
+        <p class="t-sm" style="text-align: center; margin-top: 20px;">King County medical aesthetics practices &middot; Bellevue · Kirkland · Seattle · Issaquah · Mill Creek</p>
       </div>
     </div>
 
@@ -1271,6 +1337,11 @@
     els.forEach((el) => io.observe(el));
   })();
 </script>
+
+
+<!-- GoHighLevel Calendar -->
+<script src="https://links.tbktgroup.com/js/form_embed.js" type="text/javascript"></script>
+
 
 </body>
 </html>

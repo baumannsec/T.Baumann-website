@@ -3,3 +3,5 @@ node_modules/
 temporary screenshots/
 *.png
 *.jpg
+!brand_assets/*.jpg
+!brand_assets/*.png
